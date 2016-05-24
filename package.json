@@ -1,0 +1,33 @@
+{
+    "name"        : "wildcard-named",
+    "version"     : "0.0.1",
+    "keywords"    : [ "wildcard", "named", "param", "regex" ],
+    "description" : "Simple wildcard matching with named wildcards",
+
+    "author"  : "Łaniewski Bartosz <laniewski.bartozzz@gmail.com> (http://laniewski.me/)",
+    "license" : "MIT",
+
+    "main" : "src/index.js",
+
+    "repository" : {
+        "type" : "git",
+        "url"  : "https://github.com/Bartozzz/wildcard-named.git"
+    },
+
+    "bugs" : {
+        "url" : "https://github.com/Bartozzz/wildcard-named/issues"
+    },
+
+    "dependencies" : {
+        "escape-regexp"   : "latest",
+        "array-to-object" : "latest"
+    },
+
+    "devDependencies" : {
+        "mocha" : "latest"
+    },
+
+    "scripts" : {
+        "test" : "mocha --harmony"
+    }
+}
