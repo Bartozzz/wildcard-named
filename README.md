@@ -1,6 +1,12 @@
 # wildcard-named
 
-Simple wildcard matching with named wildcards.
+Simple wildcard matching with (un)named wildcards.
+
+## Installation
+
+```bash
+$ npm install wildcard-named
+```
 
 ## Usage
 
@@ -16,6 +22,15 @@ wildcard( "abc-123:d2f", "[digit:a]-[alpah:b]:[alnum:c]" );
 // => { a : 'abc', b : '123', c : 'd2f' }
 ```
 
+### Unnamed wildcards
+
+```javascript
+const wildcard = require( "wildcard-named" );
+
+wildcard( "a-b-c", "[alpah:]-[alpah:]-[alpah:]" );
+// => { '0' : 'a', '1' : 'b', '2' : 'c' }
+```
+
 ### Wildcards
 
 You can add your own filters using the `.addFilter( filter, regex )` function, like this:
@@ -26,8 +41,8 @@ const wildcard = require( "wildcard-named" );
 wildcard.addFilter( "testA", "(.*?)" );
 wildcard.addFilter( "testB", "([0-9])" );
 
-wildcard( "thisWillBeMatches-2", "[testA:a]-[testB:b]" );
-// => { a : 'thisWillBeMatches', b : '2' }
+wildcard( "thisWillBeMatched-2", "[testA:a]-[testB:b]" );
+// => { a : 'thisWillBeMatched', b : '2' }
 ```
 
 #### Predefined wildcards
