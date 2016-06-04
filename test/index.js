@@ -1,6 +1,6 @@
 "use strict";
 
-let wildcard = require( "../src" );
+let wildcard = require( "../dist" );
 let assert   = require( "assert" );
 
 function equal( arr1, arr2 ) {
