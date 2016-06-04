@@ -24,7 +24,7 @@ function getValidRegex( pattern ) {
     let match;
 
     for ( let name in filters ) {
-        let regex = new RegExp( `\\\\\\[${name}\\\\:([A-Za-z]+)\\\\]`, "g" );
+        let regex = new RegExp( `\\\\\\[${name}\\\\:([A-Za-z]+)?\\\\]`, "g" );
 
         if ( match = regex.exec( escaped ) ) {
             escaped = escaped.replace( regex, filters[ name ] );
@@ -35,11 +35,13 @@ function getValidRegex( pattern ) {
 };
 
 function getNamedProps( pattern ) {
-    const regex = /\[(\w+):(\w+)]/g;
+    let i = 0;
+
+    const regex = /\[(\w+):(\w+)?]/g;
     const props = [];
 
     // We use the replace function to get the prop name easily:
-    pattern.replace( regex, ( ...matches ) => props.push( matches[ 2 ] ) );
+    pattern.replace( regex, ( ...m ) => props.push( m[ 2 ] || i++ ) );
 
     return props;
 };
