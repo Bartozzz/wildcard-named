@@ -10,6 +10,14 @@ $ npm install wildcard-named
 
 ## Usage
 
+You can load `wildcard-named` like a typical node module or using the global variable `wildcardNamed`:
+
+```javascript
+let wildcard = require( "wildcard-named" );
+// or...
+let wildcard = window.wildcardNamed;
+```
+
 ### Basic example
 
 ```javascript
@@ -29,6 +37,17 @@ const wildcard = require( "wildcard-named" );
 
 wildcard( "a-b-c", "[alpah:]-[alpah:]-[alpah:]" );
 // => { '0' : 'a', '1' : 'b', '2' : 'c' }
+```
+
+### Unmatched wildcards
+
+When the pattern cannot be resolved, it will return `undefined`.
+
+```javascript
+const wildcard = require( "wildcard-named" );
+
+wildcard( "a-b-c", "[alpah:]" );
+// => undefined
 ```
 
 ### Wildcards
