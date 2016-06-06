@@ -1,13 +1,13 @@
 {
     "name"        : "wildcard-named",
-    "version"     : "0.0.21",
+    "version"     : "0.0.22",
     "keywords"    : [ "wildcard", "named", "param", "regex" ],
     "description" : "Simple wildcard matching with named wildcards",
 
     "author"  : "Łaniewski Bartosz <laniewski.bartozzz@gmail.com> (http://laniewski.me/)",
     "license" : "MIT",
 
-    "main" : "dest/index.js",
+    "main" : "dist/index.js",
 
     "repository" : {
         "type" : "git",
