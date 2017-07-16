@@ -1,34 +1,37 @@
 var path    = require( "path" );
 var webpack = require( "webpack" );
 
-var SOURCE_FOLDER = __dirname + "/src/";
-var DIST_FOLDER   = __dirname + "/dist/";
-
 module.exports = {
-    entry   : path.resolve( SOURCE_FOLDER, "index.js" ),
-
-    resolve : {
-        extensions : [ "", ".js" ]
-    },
+    entry : [
+        "babel-polyfill",
+        "./src/index.js"
+    ],
 
     output : {
-        path            : DIST_FOLDER,
-        filename        : "index.js",
-        library         : "wildcardNamed",
-        libraryTarget   : "umd"
+        path          : path.resolve( __dirname, "./dist" ),
+        filename      : "index.js",
+        library       : "wildcardNamed",
+        libraryTarget : "umd"
     },
 
+    context : __dirname,
+    target  : "web",
+
     module : {
-        loaders : [
-            { test : /\.(js)$/, loader : "babel" }
-        ],
+        rules : [
+            {
+                test    : /\.js$/,
+                loader  : "babel-loader",
+                exclude : /(node_modules|bower_components)/,
+                options : {
+                    presets : [ "es2015", "es2016", "es2017", "stage-0" ],
+                    plugins : [ "transform-runtime", "add-module-exports" ]
+                }
+            }
+        ]
     },
 
     plugins : [
-        new webpack.NoErrorsPlugin(),
-        new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.AggressiveMergingPlugin(),
         new webpack.optimize.UglifyJsPlugin( {
             compress : {
                 warnings : false
