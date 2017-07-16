@@ -1,7 +1,5 @@
-"use strict";
-
-const escape  = require( "escape-regexp" );
-const arr2obj = require( "array-to-object" );
+import escape from "escape-regexp";
+import arr2obj from "array-to-object";
 
 const filters = {
     "digit"  : "([0-9]+)",
@@ -15,16 +13,31 @@ const filters = {
     "all"    : "(.*?)"
 };
 
+/**
+ * Adds a filter to the stack.
+ *
+ * @param   {string}    name    Filter name
+ * @param   {string}    regex   Filter regular expression
+ * @access  public
+ */
 function addFilter( name, regex ) {
     filters[ name ] = regex;
 };
 
+/**
+ * Returns a valid, escaped regular expression from a `pattern`. A pattern has
+ * the following form: `[filter:name]`.
+ *
+ * @param   {string}    pattern     Pattern to convert
+ * @return  {RegExp}
+ * @access  private
+ */
 function getValidRegex( pattern ) {
     let escaped = escape( pattern );
     let match;
 
-    for ( let name in filters ) {
-        let regex = new RegExp( `\\\\\\[${name}\\\\:([A-Za-z]+)?\\\\]`, "g" );
+    for ( const name in filters ) {
+        const regex = new RegExp( `\\\\\\[${name}\\\\:([A-Za-z]+)?\\\\]`, "g" );
 
         if ( match = regex.exec( escaped ) ) {
             escaped = escaped.replace( regex, filters[ name ] );
@@ -34,11 +47,17 @@ function getValidRegex( pattern ) {
     return new RegExp( `^${escaped}$`, "g" );
 };
 
+/**
+ * Returns a list of named props, where name refers to `[filter:name]`.
+ *
+ * @param   {string}    pattern     Pattern to get props from
+ * @return  {array}
+ * @access  private
+ */
 function getNamedProps( pattern ) {
-    let i = 0;
-
     const regex = /\[(\w+):(\w+)?]/g;
     const props = [];
+    let i = 0;
 
     // We use the replace function to get the prop name easily:
     pattern.replace( regex, ( ...m ) => props.push( m[ 2 ] || i++ ) );
@@ -47,11 +66,13 @@ function getNamedProps( pattern ) {
 };
 
 /**
- * @param   {RegExp}    regex
- * @param   {string}    string
+ * @param   {RegExp}    regex   Generated regular expression based on pattern
+ * @param   {string}    string  String to test
+ * @return  {array}
+ * @access  {private}
  */
 function getRegexMatches( regex, string ) {
-    let matches = regex.exec( string );
+    const matches = regex.exec( string );
 
     if ( matches ) {
         // We don't need those proprietes:
@@ -69,18 +90,19 @@ function getRegexMatches( regex, string ) {
  * Creates a regex based on wildcards and return the named parameters for a test
  * string.
  *
- * @param   {string}    string      - string to test
- * @param   {string}    pattern     - pattern to match
+ * @param   {string}    string      String to test
+ * @param   {string}    pattern     Pattern to match
  * @return  {object}
+ * @access  public
  */
 function test( string, pattern ) {
-    let regex   = getValidRegex( pattern );
-    let props   = getNamedProps( pattern );
-    let matches = getRegexMatches( regex, string );
+    const regex   = getValidRegex( pattern );
+    const props   = getNamedProps( pattern );
+    const matches = getRegexMatches( regex, string );
 
     return arr2obj( props, matches );
 };
 
-module.exports = test;
+module.exports           = test;
 module.exports.filters   = filters;
 module.exports.addFilter = addFilter;
