@@ -13,15 +13,14 @@ $ npm install wildcard-named
 You can load `wildcard-named` like a typical node module or using the global variable `wildcardNamed`:
 
 ```javascript
-let wildcard = require( "wildcard-named" );
-// or...
-let wildcard = window.wildcardNamed;
+import wildcard from "wildcard-named";
+// or window.wildcardNamed if used outside Node.js environment
 ```
 
 ### Basic example
 
 ```javascript
-const wildcard = require( "wildcard-named" );
+import wildcard from "wildcard-named";
 
 wildcard( "//blog.com/page/14", "//blog.com/page/[digit:page]" );
 // => { page : '14' }
@@ -33,7 +32,7 @@ wildcard( "abc-123:d2f", "[digit:a]-[alpah:b]:[alnum:c]" );
 ### Unnamed wildcards
 
 ```javascript
-const wildcard = require( "wildcard-named" );
+import wildcard from "wildcard-named";
 
 wildcard( "a-b-c", "[alpah:]-[alpah:]-[alpah:]" );
 // => { '0' : 'a', '1' : 'b', '2' : 'c' }
@@ -44,7 +43,7 @@ wildcard( "a-b-c", "[alpah:]-[alpah:]-[alpah:]" );
 When the pattern cannot be resolved, it will return `undefined`.
 
 ```javascript
-const wildcard = require( "wildcard-named" );
+import wildcard from "wildcard-named";
 
 wildcard( "a-b-c", "[alpah:]" );
 // => undefined
@@ -55,7 +54,7 @@ wildcard( "a-b-c", "[alpah:]" );
 You can add your own filters using the `.addFilter( filter, regex )` function, like this:
 
 ```javascript
-const wildcard = require( "wildcard-named" );
+import wildcard from "wildcard-named";
 
 wildcard.addFilter( "testA", "(.*?)" );
 wildcard.addFilter( "testB", "([0-9])" );
