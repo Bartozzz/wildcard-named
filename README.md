@@ -1,5 +1,7 @@
 # wildcard-named
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Bartozzz/wildcard-named.svg)](https://greenkeeper.io/)
+
 Simple wildcard matching with (un)named wildcards.
 
 ## Installation
