@@ -1,8 +1,14 @@
-# wildcard-named
+<div align="center">
+  <h1>wildcard-named</h1>
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/Bartozzz/wildcard-named.svg)](https://greenkeeper.io/)
+[![Build Status](https://img.shields.io/travis/Bartozzz/wildcard-named.svg)](https://travis-ci.org/Bartozzz/wildcard-named/)
+[![npm version](https://img.shields.io/npm/v/wildcard-named.svg)](https://www.npmjs.com/package/wildcard-named)
+[![npm downloads](https://img.shields.io/npm/dt/wildcard-named.svg)](https://www.npmjs.com/package/wildcard-named)
+  <br>
 
 Simple wildcard matching with (un)named wildcards.
+</div>
 
 ## Installation
 
@@ -11,8 +17,6 @@ $ npm install wildcard-named
 ```
 
 ## Usage
-
-You can load `wildcard-named` like a typical node module or using the global variable `wildcardNamed`:
 
 ```javascript
 import wildcard from "wildcard-named";
@@ -42,13 +46,13 @@ wildcard( "a-b-c", "[alpah:]-[alpah:]-[alpah:]" );
 
 ### Unmatched wildcards
 
-When the pattern cannot be resolved, it will return `undefined`.
+When the pattern cannot be resolved, it will return `null`.
 
 ```javascript
 import wildcard from "wildcard-named";
 
 wildcard( "a-b-c", "[alpah:]" );
-// => undefined
+// => null
 ```
 
 ### Wildcards
