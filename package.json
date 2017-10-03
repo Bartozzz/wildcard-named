@@ -23,7 +23,7 @@
         "array-to-object": "^1.1.0"
     },
     "devDependencies": {
-        "mocha": "^3.5.0",
+        "mocha": "^4.0.0",
         "webpack": "^3.5.5",
         "babel-core": "^6.26.0",
         "babel-loader": "^7.1.2",
