@@ -22,10 +22,6 @@ module.exports = {
                 test: /\.js$/,
                 loader: "babel-loader",
                 exclude: /(node_modules|bower_components)/,
-                options: {
-                    presets: ["flow", "es2015"],
-                    plugins: ["add-module-exports"],
-                },
             },
         ],
     },
