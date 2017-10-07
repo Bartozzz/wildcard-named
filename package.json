@@ -1,13 +1,15 @@
 {
     "name": "wildcard-named",
-    "version": "0.0.26",
+    "version": "1.0.0",
     "keywords": [
         "wildcard",
-        "named",
-        "param",
-        "regex"
+        "pattern",
+        "pattern-matching",
+        "match",
+        "regex",
+        "regex-util"
     ],
-    "description": "Simple wildcard matching with named wildcards",
+    "description": "Matches strings using named and/or unnamed wildcards",
     "author": "Łaniewski Bartosz <laniewski.bartozzz@gmail.com> (http://laniewski.me/)",
     "license": "MIT",
     "main": "dist/index.js",
