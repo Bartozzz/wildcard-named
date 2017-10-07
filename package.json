@@ -23,11 +23,13 @@
         "array-to-object": "^1.1.0"
     },
     "devDependencies": {
+        "flow-bin": "^0.56.0",
         "mocha": "^4.0.0",
         "webpack": "^3.5.5",
         "babel-cli": "^6.26.0",
         "babel-eslint": "^8.0.1",
         "babel-loader": "^7.1.2",
+        "babel-preset-flow": "^6.23.0",
         "babel-preset-es2015": "^6.24.1",
         "babel-plugin-add-module-exports": "^0.2.1",
         "eslint": "^4.8.0",
@@ -36,9 +38,11 @@
         "eslint-plugin-import": "^2.7.0"
     },
     "scripts": {
-        "test": "npm run prepare && mocha --harmony",
+        "prepare": "npm run clean && npm run eslint && npm run flow && npm run build",
+        "eslint": "node_modules/.bin/eslint --fix src test",
+        "build": "node_modules/.bin/webpack --display-error-details",
         "clean": "rm -rf dist",
-        "build": "webpack --colors --progress --display-error-details",
-        "prepare": "npm run clean && npm run build"
+        "test": "npm run prepare && mocha --harmony",
+        "flow": "flow"
     }
 }

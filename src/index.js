@@ -1,7 +1,9 @@
+// @flow
+
 import escape from "escape-regexp";
 import arr2obj from "array-to-object";
 
-const filters = {
+const filters: Object = {
     "digit": "([0-9]+)",
     "alnum": "([0-9A-Za-z]+)",
     "alpah": "([A-Za-z]+)",
@@ -14,26 +16,25 @@ const filters = {
 };
 
 /**
- * Adds a filter to the stack.
+ * Add a filter to the stack.
  *
  * @param   {string}    name    Filter name
  * @param   {string}    regex   Filter regular expression
- * @access  public
+ * @return  {void}
  */
-function addFilter(name, regex) {
+function addFilter(name: string, regex: string): void {
     filters[name] = regex;
 }
 
 /**
- * Returns a valid, escaped regular expression from a `pattern`. A pattern has
- * the following form: `[filter:name]`.
+ * Return a valid, escaped regular expression from a `pattern`. A pattern should
+ * respect the following structure: `[filter:name]`.
  *
  * @param   {string}    pattern     Pattern to convert
  * @return  {RegExp}
- * @access  private
  */
-function getValidRegex(pattern) {
-    let escaped = escape(pattern);
+function getValidRegex(pattern: string): RegExp {
+    let escaped: string = escape(pattern);
 
     for (const name in filters) {
         if (!filters.hasOwnProperty(name)) {
@@ -51,19 +52,22 @@ function getValidRegex(pattern) {
 }
 
 /**
- * Returns a list of named props, where name refers to `[filter:name]`.
+ * Return a list of named props, where name refers to `name` in `[filter:name]`.
  *
- * @param   {string}    pattern     Pattern to get props from
+ * @param   {string}    pattern Pattern to get props from
  * @return  {array}
- * @access  private
  */
-function getNamedProps(pattern) {
-    const regex = /\[(\w+):(\w+)?]/g;
-    const props = [];
-    let i = 0;
+function getNamedProps(pattern: string): Array<string|number> {
+    const regex: RegExp = /\[(\w+):(\w+)?]/g;
+    const props: Array<string|number> = [];
+    let i: number = 0;
 
     // We use the replace function to get the prop name easily:
-    pattern.replace(regex, (...m) => props.push(m[2] || i++));
+    pattern.replace(regex, (...match: Array<string|number>) => {
+        props.push(match[2] || i++);
+
+        return "";
+    });
 
     return props;
 }
@@ -71,18 +75,18 @@ function getNamedProps(pattern) {
 /**
  * @param   {RegExp}    regex   Generated regular expression based on pattern
  * @param   {string}    string  String to test
- * @return  {array}
+ * @return  {Object}
  * @access  private
  */
-function getRegexMatches(regex, string) {
-    const matches = regex.exec(string);
+function getRegexMatches(regex: RegExp, string: string): Object {
+    const matches: Object = regex.exec(string);
 
     if (matches) {
-        // We don't need those proprietes:
+        // We don't need those proprieties:
         delete matches.index;
         delete matches.input;
 
-        // Deletes the first element (input):
+        // Delete the first element:
         matches.shift();
     }
 
@@ -90,15 +94,14 @@ function getRegexMatches(regex, string) {
 }
 
 /**
- * Creates a regex based on wildcards and return the named parameters for a test
- * string.
+ * Create a regular expression based on wildcards and return the named
+ * parameters for a test string.
  *
- * @param   {string}    string      String to test
- * @param   {string}    pattern     Pattern to match
- * @return  {object}
- * @access  public
+ * @param   {string}    string  String to test
+ * @param   {string}    pattern Pattern to match
+ * @return  {Object}
  */
-function test(string, pattern) {
+function test(string: string, pattern: string): Object {
     const regex = getValidRegex(pattern);
     const props = getNamedProps(pattern);
     const matches = getRegexMatches(regex, string);

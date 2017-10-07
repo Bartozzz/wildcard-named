@@ -18,6 +18,7 @@ module.exports = {
 
     "rules": {
         "no-console": [1],
+        "no-useless-escape": [0],
         "no-param-reassign": [1],
 
         "indent" : [2, 4],
