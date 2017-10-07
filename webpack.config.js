@@ -23,8 +23,8 @@ module.exports = {
                 loader  : "babel-loader",
                 exclude : /(node_modules|bower_components)/,
                 options : {
-                    presets : [ "es2015", "es2016", "es2017", "stage-0" ],
-                    plugins : [ "transform-runtime", "add-module-exports" ]
+                    presets : [ "es2015" ],
+                    plugins : [ "add-module-exports" ]
                 }
             }
         ]
