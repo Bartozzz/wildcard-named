@@ -2,28 +2,18 @@
 
 import escape from "escape-regexp";
 
-const filters: Object = {
-    "digit": "([0-9]+)",
-    "alnum": "([0-9A-Za-z]+)",
-    "alpah": "([A-Za-z]+)",
-    "xdigit": "([0-9A-Fa-f]+)",
-    "punct": "([\p{P}\d]+)",
-    "print": "([\x20-\x7e]*)",
-    "upper": "([A-Z]+)",
-    "lower": "([a-z]+)",
-    "all": "(.*?)",
-};
+const filters: Map<string, string> = new Map();
 
-/**
- * Add a filter to the stack.
- *
- * @param   {string}    name    Filter name
- * @param   {string}    regex   Filter regular expression
- * @return  {void}
- */
-function addFilter(name: string, regex: string): void {
-    filters[name] = regex;
-}
+// Add default filters:
+filters.set("digit", "([0-9]+)");
+filters.set("alnum", "([0-9A-Za-z]+)");
+filters.set("alpah", "([A-Za-z]+)");
+filters.set("xdigit", "([0-9A-Fa-f]+)");
+filters.set("punct", "([\p{P}\d]+)");
+filters.set("print", "([\x20-\x7e]*)");
+filters.set("upper", "([A-Z]+)");
+filters.set("lower", "([a-z]+)");
+filters.set("all", "(.*?)");
 
 /**
  * Return a valid, escaped regular expression from a `pattern`. A pattern should
@@ -35,15 +25,11 @@ function addFilter(name: string, regex: string): void {
 function getValidRegex(pattern: string): RegExp {
     let escaped: string = escape(pattern);
 
-    for (const name in filters) {
-        if (!filters.hasOwnProperty(name)) {
-            continue;
-        }
+    for (const data of filters) {
+        const rxp = new RegExp(`\\\\\\[${data[0]}\\\\:[A-Za-z]{0,}?\\\\]`, "g");
 
-        const regex = new RegExp(`\\\\\\[${name}\\\\:[A-Za-z]{0,}?\\\\]`, "g");
-
-        if (regex.exec(escaped)) {
-            escaped = escaped.replace(regex, filters[name]);
+        if (rxp.exec(escaped)) {
+            escaped = escaped.replace(rxp, data[1]);
         }
     }
 
@@ -108,4 +94,4 @@ function test(string: string, pattern: string): Object {
 
 module.exports = test;
 module.exports.filters = filters;
-module.exports.addFilter = addFilter;
+module.exports.addFilter = filters.set.bind(filters);

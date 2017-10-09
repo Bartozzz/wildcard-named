@@ -69,6 +69,8 @@ wildcard( "thisWillBeMatched-2", "[testA:a]-[testB:b]" );
 // => { a : 'thisWillBeMatched', b : '2' }
 ```
 
+All registered filters are stored in a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) accessible at `wildcard.filters`.
+
 #### Predefined wildcards
 
 | Filter | Regex            |

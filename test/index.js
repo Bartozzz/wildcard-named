@@ -52,8 +52,8 @@ describe("wildcard-param", () => {
         wildcard.addFilter("testA", "regex");
         wildcard.addFilter("testB", "regex");
 
-        assert.equal(true, "testA" in wildcard.filters);
-        assert.equal(true, "testB" in wildcard.filters);
+        assert.equal(true, wildcard.filters.has("testA"));
+        assert.equal(true, wildcard.filters.has("testB"));
     });
 
     it("should match new filters", () => {
