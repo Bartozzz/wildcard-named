@@ -59,16 +59,18 @@ function getNamedProps(pattern: string): Array<string|number> {
 /**
  * @param   {RegExp}    regex   Generated regular expression based on pattern
  * @param   {string}    string  String to test
- * @return  {array}
+ * @return  {array|null}
  * @access  private
  */
-function getRegexMatches(regex: RegExp, string: string): Array<string> {
-    const matches: Array<string> = regex.exec(string);
+function getRegexMatches(regex: RegExp, string: string): Array<string>|null {
+    let matches: Array<string> = regex.exec(string);
 
-    matches.shift();
+    if (matches) {
+        matches.shift();
+        matches = Array.from(matches); // remove properites set by regex.exec()
+    }
 
-    // Remove properites set by `regex.exec()` (`index`, `input`)
-    return Array.from(matches);
+    return matches;
 }
 
 /**
@@ -77,12 +79,17 @@ function getRegexMatches(regex: RegExp, string: string): Array<string> {
  *
  * @param   {string}    string  String to test
  * @param   {string}    pattern Pattern to match
- * @return  {Object}
+ * @return  {Object|null}
  */
-function test(string: string, pattern: string): Object {
+function test(string: string, pattern: string): Object|null {
     const regex: RegExp = getValidRegex(pattern);
+    const matches: Array<string>|null = getRegexMatches(regex, string);
+
+    if (!matches) {
+        return null;
+    }
+
     const props: Array<string|number> = getNamedProps(pattern);
-    const matches: Array<string> = getRegexMatches(regex, string);
 
     // Creates an object from two arrays:
     return props.reduce((output, value, index) => {

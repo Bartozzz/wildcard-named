@@ -48,6 +48,12 @@ describe("wildcard-param", () => {
         ));
     });
 
+    it("should return null when nothing matched", () => {
+        assert.equal(null, wildcard("a-b-c", "[alpah:]"));
+        assert.equal(null, wildcard("a-b-c", "[alpah:]-[alpah:]"));
+        assert.equal(null, wildcard("a-b-c", "[lower:]-[lower:]-[upper:]"));
+    });
+
     it("should add new filters", () => {
         wildcard.addFilter("testA", "regex");
         wildcard.addFilter("testB", "regex");
