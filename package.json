@@ -21,8 +21,7 @@
         "url": "https://github.com/Bartozzz/wildcard-named/issues"
     },
     "dependencies": {
-        "escape-regexp": "^0.0.1",
-        "array-to-object": "^1.1.0"
+        "escape-regexp": "^0.0.1"
     },
     "devDependencies": {
         "flow-bin": "^0.56.0",

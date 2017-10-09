@@ -1,7 +1,6 @@
 // @flow
 
 import escape from "escape-regexp";
-import arr2obj from "array-to-object";
 
 const filters: Object = {
     "digit": "([0-9]+)",
@@ -99,7 +98,12 @@ function test(string: string, pattern: string): Object {
     const props: Array<string|number> = getNamedProps(pattern);
     const matches: Array<string> = getRegexMatches(regex, string);
 
-    return arr2obj(props, matches);
+    // Creates an object from two arrays:
+    return props.reduce((output, value, index) => {
+        output[value] = matches[index];
+
+        return output;
+    }, {});
 }
 
 module.exports = test;
