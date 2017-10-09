@@ -3,6 +3,7 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/Bartozzz/wildcard-named.svg)](https://greenkeeper.io/)
 [![Build Status](https://img.shields.io/travis/Bartozzz/wildcard-named.svg)](https://travis-ci.org/Bartozzz/wildcard-named/)
+[![License](https://img.shields.io/github/license/Bartozzz/wildcard-named.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/wildcard-named.svg)](https://www.npmjs.com/package/wildcard-named)
 [![npm downloads](https://img.shields.io/npm/dt/wildcard-named.svg)](https://www.npmjs.com/package/wildcard-named)
   <br>
