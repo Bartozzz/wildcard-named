@@ -30,7 +30,7 @@ function addFilter(name: string, regex: string): void {
  * Return a valid, escaped regular expression from a `pattern`. A pattern should
  * respect the following structure: `[filter:name]`.
  *
- * @param   {string}    pattern     Pattern to convert
+ * @param   {string}    pattern Pattern to convert
  * @return  {RegExp}
  */
 function getValidRegex(pattern: string): RegExp {
@@ -41,7 +41,7 @@ function getValidRegex(pattern: string): RegExp {
             continue;
         }
 
-        const regex = new RegExp(`\\\\\\[${name}\\\\:([A-Za-z]+)?\\\\]`, "g");
+        const regex = new RegExp(`\\\\\\[${name}\\\\:[A-Za-z]{0,}?\\\\]`, "g");
 
         if (regex.exec(escaped)) {
             escaped = escaped.replace(regex, filters[name]);
@@ -62,7 +62,6 @@ function getNamedProps(pattern: string): Array<string|number> {
     const props: Array<string|number> = [];
     let i: number = 0;
 
-    // We use the replace function to get the prop name easily:
     pattern.replace(regex, (...match: Array<string|number>) => {
         props.push(match[2] || i++);
 
@@ -75,22 +74,16 @@ function getNamedProps(pattern: string): Array<string|number> {
 /**
  * @param   {RegExp}    regex   Generated regular expression based on pattern
  * @param   {string}    string  String to test
- * @return  {Object}
+ * @return  {array}
  * @access  private
  */
-function getRegexMatches(regex: RegExp, string: string): Object {
-    const matches: Object = regex.exec(string);
+function getRegexMatches(regex: RegExp, string: string): Array<string> {
+    const matches: Array<string> = regex.exec(string);
 
-    if (matches) {
-        // We don't need those proprieties:
-        delete matches.index;
-        delete matches.input;
+    matches.shift();
 
-        // Delete the first element:
-        matches.shift();
-    }
-
-    return matches;
+    // Remove properites set by `regex.exec()` (`index`, `input`)
+    return Array.from(matches);
 }
 
 /**
@@ -102,9 +95,9 @@ function getRegexMatches(regex: RegExp, string: string): Object {
  * @return  {Object}
  */
 function test(string: string, pattern: string): Object {
-    const regex = getValidRegex(pattern);
-    const props = getNamedProps(pattern);
-    const matches = getRegexMatches(regex, string);
+    const regex: RegExp = getValidRegex(pattern);
+    const props: Array<string|number> = getNamedProps(pattern);
+    const matches: Array<string> = getRegexMatches(regex, string);
 
     return arr2obj(props, matches);
 }
