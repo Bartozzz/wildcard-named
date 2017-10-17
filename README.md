@@ -29,11 +29,11 @@ import wildcard from "wildcard-named";
 ```javascript
 import wildcard from "wildcard-named";
 
-wildcard( "//blog.com/page/14", "//blog.com/page/[digit:page]" );
-// => { page : '14' }
+wildcard("//blog.com/page/14", "//blog.com/page/[digit:page]");
+// => { page: '14' }
 
-wildcard( "abc-123:d2f", "[digit:a]-[alpah:b]:[alnum:c]" );
-// => { a : 'abc', b : '123', c : 'd2f' }
+wildcard("abc-123:d2f", "[digit:a]-[alpah:b]:[alnum:c]");
+// => { a: 'abc', b: '123', c: 'd2f' }
 ```
 
 ### Unnamed wildcards
@@ -41,8 +41,8 @@ wildcard( "abc-123:d2f", "[digit:a]-[alpah:b]:[alnum:c]" );
 ```javascript
 import wildcard from "wildcard-named";
 
-wildcard( "a-b-c", "[alpah:]-[alpah:]-[alpah:]" );
-// => { '0' : 'a', '1' : 'b', '2' : 'c' }
+wildcard("a-b-c", "[alpah:]-[alpah:]-[alpah:]");
+// => { 0: 'a', 1: 'b', 2: 'c' }
 ```
 
 ### Unmatched wildcards
@@ -52,7 +52,7 @@ When the pattern cannot be resolved, it will return `null`.
 ```javascript
 import wildcard from "wildcard-named";
 
-wildcard( "a-b-c", "[alpah:]" );
+wildcard("a-b-c", "[alpah:]");
 // => null
 ```
 
@@ -63,28 +63,28 @@ You can add your own filters using the `.addFilter( filter, regex )` function, l
 ```javascript
 import wildcard from "wildcard-named";
 
-wildcard.addFilter( "testA", "(.*?)" );
-wildcard.addFilter( "testB", "([0-9])" );
+wildcard.addFilter("testA", "(.*?)");
+wildcard.addFilter("testB", "([0-9])");
 
-wildcard( "thisWillBeMatched-2", "[testA:a]-[testB:b]" );
-// => { a : 'thisWillBeMatched', b : '2' }
+wildcard("thisWillBeMatched-2", "[testA:a]-[testB:b]");
+// => { a: 'thisWillBeMatched', b: '2' }
 ```
 
 All registered filters are stored in a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) accessible at `wildcard.filters`.
 
 #### Predefined wildcards
 
-| Filter | Regex            |
-|--------|------------------|
-| digit  | `([0-9]+)`       |
-| alnum  | `([0-9A-Za-z]+)` |
-| alpah  | `([A-Za-z]+)`    |
-| xdigit | `([0-9A-Fa-f]+)` |
-| punct  | `([\p{P}\d]+)`   |
-| print  | `([\x20-\x7e]*)` |
-| upper  | `([A-Z]+)`       |
-| lower  | `([a-z]+)`       |
-| all    | `(.*?)`          |
+| Filter   | Regex            |
+|----------|------------------|
+| `digit`  | `([0-9]+)`       |
+| `alnum`  | `([0-9A-Za-z]+)` |
+| `alpah`  | `([A-Za-z]+)`    |
+| `xdigit` | `([0-9A-Fa-f]+)` |
+| `punct`  | `([\p{P}\d]+)`   |
+| `print`  | `([\x20-\x7e]*)` |
+| `upper`  | `([A-Z]+)`       |
+| `lower`  | `([a-z]+)`       |
+| `all`    | `(.*?)`          |
 
 ## Tests
 
