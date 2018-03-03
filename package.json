@@ -25,24 +25,25 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.1",
-    "babel-loader": "^7.1.2",
+    "babel-eslint": "^8.2.2",
+    "babel-loader": "^7.1.3",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
-    "eslint": "^4.16.0",
+    "eslint": "^4.18.2",
     "eslint-config-google": "^0.9.1",
-    "eslint-plugin-flowtype": "^2.42.0",
-    "eslint-plugin-import": "^2.8.0",
-    "flow-bin": "^0.64.0",
-    "mocha": "^5.0.0",
-    "webpack": "^3.10.0"
+    "eslint-plugin-flowtype": "^2.46.1",
+    "eslint-plugin-import": "^2.9.0",
+    "flow-bin": "^0.66.0",
+    "mocha": "^5.0.1",
+    "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.10"
   },
   "scripts": {
-    "prepare": "npm run clean && npm run eslint && npm run flow && npm run build",
-    "eslint": "node_modules/.bin/eslint --fix src test",
-    "build": "node_modules/.bin/webpack --display-error-details",
+    "prepare": "npm run clean && npm run lint && npm run flow && npm run build",
+    "build": "node_modules/.bin/webpack --mode=production",
     "clean": "rm -rf dist",
+    "lint": "node_modules/.bin/eslint --fix src test",
     "test": "npm run prepare && mocha --harmony",
     "flow": "flow"
   }

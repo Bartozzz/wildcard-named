@@ -14,28 +14,15 @@ module.exports = {
     },
 
     context: __dirname,
-    target: "web",
+    target: "node",
 
     module: {
         rules: [
             {
                 test: /\.js$/,
                 loader: "babel-loader",
-                exclude: /(node_modules|bower_components)/,
+                exclude: /node_modules/,
             },
         ],
-    },
-
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
-
-            output: {
-                comments: false,
-                semicolons: true,
-            },
-        }),
-    ],
+    }
 };
