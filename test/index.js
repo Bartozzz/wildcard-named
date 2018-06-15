@@ -1,74 +1,54 @@
-"use strict";
-
-let wildcard = require("../dist");
-let assert = require("assert");
-
-/**
- * Checks whenever two arrats have the same items.
- *
- * @param  {array}  arr1
- * @param  {array}  arr2
- * @return {boolean}
- */
-function equal(arr1, arr2) {
-    if (arr1.length !== arr2.length) {
-        return false;
-    }
-    for (let i = arr1.length; i--;) {
-        if (arr1[i] !== arr2[i]) {
-            return false;
-        }
-    }
-
-    return true;
-}
+import wildcard from "../dist";
+import assert from "assert";
 
 describe("wildcard-param", () => {
-    it("should match named parameters", () => {
-        assert.equal(true, equal(
-            {a: "1", b: "2", c: "3"},
-            wildcard("1-2-3", "[digit:a]-[digit:b]-[digit:c]")
-        ));
-
-        assert.equal(true, equal(
-            {al: "a", be: "b"},
-            wildcard("a:b", "[alpah:al]:[alpah:be]")
-        ));
+  it("should match named parameters", () => {
+    assert.deepStrictEqual(wildcard("1-2-3", "[digit:a]-[digit:b]-[digit:c]"), {
+      a: "1",
+      b: "2",
+      c: "3",
     });
 
-    it("should match unnamed parameters", () => {
-        assert.equal(true, equal(
-            {0: "1", 1: "2", 2: "3"},
-            wildcard("1-2-3", "[digit:]-[digit:]-[digit:]")
-        ));
+    assert.deepStrictEqual(wildcard("a:b", "[alpah:aa]:[alpah:bb]"), {
+      aa: "a",
+      bb: "b",
+    });
+  });
 
-        assert.equal(true, equal(
-            {0: "a", 1: "b"},
-            wildcard("a:b", "[alpah:]:[alpah:]")
-        ));
+  it("should match unnamed parameters", () => {
+    assert.deepStrictEqual(wildcard("1-2-3", "[digit:]-[digit:]-[digit:]"), {
+      0: "1",
+      1: "2",
+      2: "3",
     });
 
-    it("should return null when nothing matched", () => {
-        assert.equal(null, wildcard("a-b-c", "[alpah:]"));
-        assert.equal(null, wildcard("a-b-c", "[alpah:]-[alpah:]"));
-        assert.equal(null, wildcard("a-b-c", "[lower:]-[lower:]-[upper:]"));
+    assert.deepStrictEqual(wildcard("a:b", "[alpah:]:[alpah:]"), {
+      0: "a",
+      1: "b",
     });
+  });
 
-    it("should add new filters", () => {
-        wildcard.addFilter("testA", "regex");
-        wildcard.addFilter("testB", "regex");
+  it("should return null when nothing matched", () => {
+    assert.equal(null, wildcard("a-b-c", "[alpah:]"));
+    assert.equal(null, wildcard("a-b-c", "[alpah:]-[alpah:]"));
+    assert.equal(null, wildcard("a-b-c", "[lower:]-[lower:]-[upper:]"));
+  });
 
-        assert.equal(true, wildcard.filters.has("testA"));
-        assert.equal(true, wildcard.filters.has("testB"));
+  it("should add new filters", () => {
+    wildcard.addFilter("testA", "regex");
+    wildcard.addFilter("testB", "regex");
+
+    assert.equal(true, wildcard.filters.has("testA"));
+    assert.equal(true, wildcard.filters.has("testB"));
+  });
+
+  it("should match new filters", () => {
+    wildcard.addFilter("testing1", "(.*?)");
+    wildcard.addFilter("testing2", "([0-9])");
+
+    assert.deepStrictEqual(wildcard("foo-1", "[testing1:a]-[testing2:b]"), {
+      a: "foo",
+      b: "1",
     });
-
-    it("should match new filters", () => {
-        wildcard.addFilter("testing1", "(.*?)");
-        wildcard.addFilter("testing2", "([0-9])");
-
-        assert.equal(true, equal(
-            {a: "thisWillBeMatched", b: "2"},
-            wildcard("thisWillBeMatched-2", "[testing1:a]-[testing2:b]")
-        ));
-    });
+  });
 });
