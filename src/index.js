@@ -1,10 +1,8 @@
 // @flow
-
 import escape from "escape-regexp";
 
 const filters: Map<string, string> = new Map();
 
-// Add default filters:
 filters.set("digit", "([0-9]+)");
 filters.set("alnum", "([0-9A-Za-z]+)");
 filters.set("alpah", "([A-Za-z]+)");
@@ -17,60 +15,59 @@ filters.set("all", "(.*?)");
 
 /**
  * Return a valid, escaped regular expression from a `pattern`. A pattern should
- * respect the following structure: `[filter:name]`.
+ * respect the following structure: `[filter:name?]`.
  *
- * @param   {string}    pattern Pattern to convert
- * @return  {RegExp}
+ * @param   {string}    pattern   Pattern to convert
+ * @return  {RegExp}              Escaped regular expression
  */
-function getValidRegex(pattern: string): RegExp {
-    let escaped: string = escape(pattern);
+function getValidRegex(pattern: string): * {
+  let escaped: string = escape(pattern);
 
-    for (const data of filters) {
-        const rxp = new RegExp(`\\\\\\[${data[0]}\\\\:[A-Za-z]{0,}?\\\\]`, "g");
+  for (const data of filters) {
+    const rxp = new RegExp(`\\\\\\[${data[0]}\\\\:[A-Za-z]{0,}?\\\\]`, "g");
 
-        if (rxp.exec(escaped)) {
-            escaped = escaped.replace(rxp, data[1]);
-        }
+    if (rxp.exec(escaped)) {
+      escaped = escaped.replace(rxp, data[1]);
     }
+  }
 
-    return new RegExp(`^${escaped}$`, "g");
+  return new RegExp(`^${escaped}$`, "g");
 }
 
 /**
  * Return a list of named props, where name refers to `name` in `[filter:name]`.
  *
- * @param   {string}    pattern Pattern to get props from
- * @return  {array}
+ * @param   {string}    pattern   Pattern to get props from
+ * @return  {Array}               Array of named props
  */
-function getNamedProps(pattern: string): Array<string|number> {
-    const regex: RegExp = /\[(\w+):(\w+)?]/g;
-    const props: Array<string|number> = [];
-    let i: number = 0;
+function getNamedProps(pattern: string): * {
+  const regex = /\[(\w+):(\w+)?]/g;
+  const props = [];
+  let i = 0;
 
-    pattern.replace(regex, (...match: Array<string|number>) => {
-        props.push(match[2] || i++);
+  pattern.replace(regex, (...match) => {
+    props.push(match[2] || i++);
+    return "";
+  });
 
-        return "";
-    });
-
-    return props;
+  return props;
 }
 
 /**
  * @param   {RegExp}    regex   Generated regular expression based on pattern
  * @param   {string}    string  String to test
- * @return  {array|null}
+ * @return  {Array|null}
  * @access  private
  */
-function getRegexMatches(regex: RegExp, string: string): Array<string>|null {
-    let matches: Array<string> = regex.exec(string);
+function getRegexMatches(regex: RegExp, string: string): * {
+  let matches: Array<string> = regex.exec(string);
 
-    if (matches) {
-        matches.shift();
-        matches = Array.from(matches); // remove properites set by regex.exec()
-    }
+  if (matches) {
+    matches.shift();
+    matches = Array.from(matches); // remove properites set by regex.exec()
+  }
 
-    return matches;
+  return matches;
 }
 
 /**
@@ -81,22 +78,22 @@ function getRegexMatches(regex: RegExp, string: string): Array<string>|null {
  * @param   {string}    pattern Pattern to match
  * @return  {Object|null}
  */
-function test(string: string, pattern: string): Object|null {
-    const regex: RegExp = getValidRegex(pattern);
-    const matches: Array<string>|null = getRegexMatches(regex, string);
+function test(string: string, pattern: string): Object | null {
+  const regex = getValidRegex(pattern);
+  const matches = getRegexMatches(regex, string);
 
-    if (!matches) {
-        return null;
-    }
+  if (!matches) {
+    return null;
+  }
 
-    const props: Array<string|number> = getNamedProps(pattern);
+  const props = getNamedProps(pattern);
 
-    // Creates an object from two arrays:
-    return props.reduce((output, value, index) => {
-        output[value] = matches[index];
+  // Creates an object from two arrays:
+  return props.reduce((output, value, index) => {
+    output[value] = matches[index];
 
-        return output;
-    }, {});
+    return output;
+  }, {});
 }
 
 module.exports = test;

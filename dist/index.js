@@ -1,1 +1,128 @@
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.wildcardNamed=t():e.wildcardNamed=t()}(global,function(){return function(e){var t={};function r(n){if(t[n])return t[n].exports;var o=t[n]={i:n,l:!1,exports:{}};return e[n].call(o.exports,o,o.exports,r),o.l=!0,o.exports}return r.m=e,r.c=t,r.d=function(e,t,n){r.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:n})},r.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(r.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)r.d(n,o,function(t){return e[t]}.bind(null,o));return n},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,"a",t),t},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},r.p="",r(r.s=2)}([function(e,t){e.exports=function(e){return String(e).replace(/([.*+?=^!:${}()|[\]\/\\])/g,"\\$1")}},function(e,t,r){"use strict";var n,o=r(0),u=(n=o)&&n.__esModule?n:{default:n};var i=new Map;i.set("digit","([0-9]+)"),i.set("alnum","([0-9A-Za-z]+)"),i.set("alpah","([A-Za-z]+)"),i.set("xdigit","([0-9A-Fa-f]+)"),i.set("punct","([p{P}d]+)"),i.set("print","([ -~]*)"),i.set("upper","([A-Z]+)"),i.set("lower","([a-z]+)"),i.set("all","(.*?)"),e.exports=function(e,t){var r=function(e,t){var r=e.exec(t);return r&&(r.shift(),r=Array.from(r)),r}(function(e){var t=(0,u.default)(e),r=!0,n=!1,o=void 0;try{for(var a,f=i[Symbol.iterator]();!(r=(a=f.next()).done);r=!0){var l=a.value,c=new RegExp("\\\\\\["+l[0]+"\\\\:[A-Za-z]{0,}?\\\\]","g");c.exec(t)&&(t=t.replace(c,l[1]))}}catch(e){n=!0,o=e}finally{try{!r&&f.return&&f.return()}finally{if(n)throw o}}return new RegExp("^"+t+"$","g")}(t),e);return r?function(e){var t=[],r=0;return e.replace(/\[(\w+):(\w+)?]/g,function(){return t.push((arguments.length<=2?void 0:arguments[2])||r++),""}),t}(t).reduce(function(e,t,n){return e[t]=r[n],e},{}):null},e.exports.filters=i,e.exports.addFilter=i.set.bind(i)},function(e,t,r){e.exports=r(1)}])});
+"use strict";
+
+var _escapeRegexp = require("escape-regexp");
+
+var _escapeRegexp2 = _interopRequireDefault(_escapeRegexp);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var filters = new Map();
+
+
+filters.set("digit", "([0-9]+)");
+filters.set("alnum", "([0-9A-Za-z]+)");
+filters.set("alpah", "([A-Za-z]+)");
+filters.set("xdigit", "([0-9A-Fa-f]+)");
+filters.set("punct", "([p{P}d]+)");
+filters.set("print", "([\x20-\x7e]*)");
+filters.set("upper", "([A-Z]+)");
+filters.set("lower", "([a-z]+)");
+filters.set("all", "(.*?)");
+
+/**
+ * Return a valid, escaped regular expression from a `pattern`. A pattern should
+ * respect the following structure: `[filter:name?]`.
+ *
+ * @param   {string}    pattern   Pattern to convert
+ * @return  {RegExp}              Escaped regular expression
+ */
+function getValidRegex(pattern) {
+  var escaped = (0, _escapeRegexp2.default)(pattern);
+
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = filters[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var data = _step.value;
+
+      var rxp = new RegExp("\\\\\\[" + data[0] + "\\\\:[A-Za-z]{0,}?\\\\]", "g");
+
+      if (rxp.exec(escaped)) {
+        escaped = escaped.replace(rxp, data[1]);
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  return new RegExp("^" + escaped + "$", "g");
+}
+
+/**
+ * Return a list of named props, where name refers to `name` in `[filter:name]`.
+ *
+ * @param   {string}    pattern   Pattern to get props from
+ * @return  {Array}               Array of named props
+ */
+function getNamedProps(pattern) {
+  var regex = /\[(\w+):(\w+)?]/g;
+  var props = [];
+  var i = 0;
+
+  pattern.replace(regex, function () {
+    props.push((arguments.length <= 2 ? undefined : arguments[2]) || i++);
+    return "";
+  });
+
+  return props;
+}
+
+/**
+ * @param   {RegExp}    regex   Generated regular expression based on pattern
+ * @param   {string}    string  String to test
+ * @return  {Array|null}
+ * @access  private
+ */
+function getRegexMatches(regex, string) {
+  var matches = regex.exec(string);
+
+  if (matches) {
+    matches.shift();
+    matches = Array.from(matches); // remove properites set by regex.exec()
+  }
+
+  return matches;
+}
+
+/**
+ * Create a regular expression based on wildcards and return the named
+ * parameters for a test string.
+ *
+ * @param   {string}    string  String to test
+ * @param   {string}    pattern Pattern to match
+ * @return  {Object|null}
+ */
+function test(string, pattern) {
+  var regex = getValidRegex(pattern);
+  var matches = getRegexMatches(regex, string);
+
+  if (!matches) {
+    return null;
+  }
+
+  var props = getNamedProps(pattern);
+
+  // Creates an object from two arrays:
+  return props.reduce(function (output, value, index) {
+    output[value] = matches[index];
+
+    return output;
+  }, {});
+}
+
+module.exports = test;
+module.exports.filters = filters;
+module.exports.addFilter = filters.set.bind(filters);
