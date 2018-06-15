@@ -1,0 +1,28 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["eslint:recommended", "google"],
+  "plugins": ["flowtype"],
+
+  "env": {
+    "es6": true,
+    "node": true,
+    "mocha": true,
+    "browser": true,
+    "shared-node-browser": true
+  },
+
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+
+  "rules": {
+    "no-console": [1],
+    "no-useless-escape": [0],
+    "no-param-reassign": [1],
+
+    "indent": [2, 2],
+    "quotes": [2, "double"],
+    "space-in-parens": [2, "never"]
+  }
+}
