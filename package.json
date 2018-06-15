@@ -1,16 +1,17 @@
 {
   "name": "wildcard-named",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "keywords": [
     "wildcard",
-    "pattern",
-    "pattern-matching",
-    "match",
     "regex",
-    "regex-util"
+    "regex-util",
+    "pattern-matching",
+    "pattern",
+    "match",
+    "string-matching"
   ],
-  "description": "Matches strings using named and/or unnamed wildcards",
-  "author": "Łaniewski Bartosz <laniewski.bartozzz@gmail.com> (http://laniewski.me/)",
+  "description": "A small and easy-to-use utility module for matching strings using named and/or unnamed wildcards for JavaScript.",
+  "author": "Łaniewski Bartosz <laniewski.bartozzz@gmail.com> (https://laniewski.me/)",
   "license": "MIT",
   "main": "dist/index.js",
   "repository": {
