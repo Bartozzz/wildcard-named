@@ -8,7 +8,7 @@
 [![npm downloads](https://img.shields.io/npm/dt/wildcard-named.svg)](https://www.npmjs.com/package/wildcard-named)
   <br>
 
-Simple wildcard matching with (un)named wildcards.
+A small and easy-to-use utility module for matching strings using named and/or unnamed wildcards for JavaScript.
 </div>
 
 ## Installation
@@ -21,7 +21,6 @@ $ npm install wildcard-named
 
 ```javascript
 import wildcard from "wildcard-named";
-// or window.wildcardNamed if used outside Node.js environment
 ```
 
 ### Basic example
@@ -30,10 +29,10 @@ import wildcard from "wildcard-named";
 import wildcard from "wildcard-named";
 
 wildcard("//blog.com/page/14", "//blog.com/page/[digit:page]");
-// => { page: '14' }
+// { page: '14' }
 
 wildcard("abc-123:d2f", "[digit:a]-[alpah:b]:[alnum:c]");
-// => { a: 'abc', b: '123', c: 'd2f' }
+// { a: 'abc', b: '123', c: 'd2f' }
 ```
 
 ### Unnamed wildcards
@@ -42,7 +41,7 @@ wildcard("abc-123:d2f", "[digit:a]-[alpah:b]:[alnum:c]");
 import wildcard from "wildcard-named";
 
 wildcard("a-b-c", "[alpah:]-[alpah:]-[alpah:]");
-// => { 0: 'a', 1: 'b', 2: 'c' }
+// { 0: 'a', 1: 'b', 2: 'c' }
 ```
 
 ### Unmatched wildcards
@@ -53,12 +52,12 @@ When the pattern cannot be resolved, it will return `null`.
 import wildcard from "wildcard-named";
 
 wildcard("a-b-c", "[alpah:]");
-// => null
+// null
 ```
 
 ### Wildcards
 
-You can add your own filters using the `.addFilter( filter, regex )` function, like this:
+You can add your own filters using the `.addFilter(filter, regex)` function, like this:
 
 ```javascript
 import wildcard from "wildcard-named";
@@ -66,11 +65,11 @@ import wildcard from "wildcard-named";
 wildcard.addFilter("testA", "(.*?)");
 wildcard.addFilter("testB", "([0-9])");
 
-wildcard("thisWillBeMatched-2", "[testA:a]-[testB:b]");
-// => { a: 'thisWillBeMatched', b: '2' }
+wildcard("match-1", "[testA:a]-[testB:b]");
+// { a: 'match', b: '1' }
 ```
 
-All registered filters are stored in a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) accessible at `wildcard.filters`.
+All registered filters are stored in a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) at `wildcard.filters`.
 
 #### Predefined wildcards
 
