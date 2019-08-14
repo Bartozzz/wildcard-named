@@ -35,7 +35,7 @@
     "eslint-plugin-flowtype": "^3.0.0",
     "flow-bin": "^0.74.0",
     "mocha": "^5.2.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^3.0.0"
   },
   "scripts": {
     "prepare": "npm run clean && npm run lint && npm run flow && npm run build",
