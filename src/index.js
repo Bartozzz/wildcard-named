@@ -60,7 +60,7 @@ function getNamedProps(pattern: string): * {
  * @access  private
  */
 function getRegexMatches(regex: RegExp, string: string): * {
-  let matches: Array<string> = regex.exec(string);
+  let matches: ?Array<string> = regex.exec(string);
 
   if (matches) {
     matches.shift();
