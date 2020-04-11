@@ -25,25 +25,39 @@
     "escape-regexp": "^0.0.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "6.26.3",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-flow": "^7.9.0",
+    "@babel/register": "^7.9.0",
     "babel-eslint": "^10.0.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-flow": "^6.23.0",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "babel-preset-minify": "^0.5.1",
     "eslint": "^6.8.0",
-    "eslint-config-google": "^0.11.0",
-    "eslint-plugin-flowtype": "^3.0.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-flowtype": "^4.7.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "flow-bin": "^0.122.0",
     "mocha": "^7.1.1",
-    "rimraf": "^2.6.2"
+    "prettier": "^2.0.4",
+    "rimraf": "^3.0.2"
   },
   "scripts": {
-    "prepare": "npm run clean && npm run lint && npm run flow && npm run build",
+    "pretest": "npm run prepare",
+    "test": "npm run test:flow && npm run test:lint && npm run test:unit",
+    "test:flow": "npx flow",
+    "test:unit": "npx mocha --require @babel/register",
+    "test:lint": "npx eslint src",
+    "clean": "npx rimraf dist",
+    "prebuild": "npm run clean",
     "build": "npx babel src -d dist",
     "watch": "npx babel src -d dist -w",
-    "clean": "rimraf dist",
-    "lint": "npx eslint --fix src",
-    "test": "npm run prepare && mocha --require babel-core/register",
-    "flow": "flow"
+    "prepare": "npm run build"
   }
 }

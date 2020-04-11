@@ -7,7 +7,7 @@ filters.set("digit", "([0-9]+)");
 filters.set("alnum", "([0-9A-Za-z]+)");
 filters.set("alpah", "([A-Za-z]+)");
 filters.set("xdigit", "([0-9A-Fa-f]+)");
-filters.set("punct", "([\p{P}\d]+)");
+filters.set("punct", `([\p{P}\d]+)`);
 filters.set("print", "([\x20-\x7e]*)");
 filters.set("upper", "([A-Z]+)");
 filters.set("lower", "([a-z]+)");
