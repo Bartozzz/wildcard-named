@@ -1,4 +1,9 @@
-import wildcard, { filters, addFilter, getNamedProps } from "../dist";
+import wildcard, {
+  filters,
+  addFilter,
+  getNamedProps,
+  getValidRegex,
+} from "../dist";
 import assert from "assert";
 
 describe("wildcard-named", () => {
@@ -32,6 +37,25 @@ describe("wildcard-named", () => {
     assert.equal(undefined, wildcard("a-b-c", "[alpah:]"));
     assert.equal(undefined, wildcard("a-b-c", "[alpah:]-[alpah:]"));
     assert.equal(undefined, wildcard("a-b-c", "[lower:]-[lower:]-[upper:]"));
+  });
+
+  describe("getValidRegex", () => {
+    it("should generate valid regular expression for a given pattern", () => {
+      assert.equal(
+        "/^([0-9]+)-([0-9]+)$/g",
+        getValidRegex("[digit:a]-[digit:b]").toString()
+      );
+
+      assert.equal(
+        "/^([0-9]+)-([0-9]+)$/g",
+        getValidRegex("[digit:]-[digit:]").toString()
+      );
+
+      assert.equal(
+        "/^([a-z]+)-([a-z]+)-([A-Z]+)$/g",
+        getValidRegex("[lower:]-[lower:a]-[upper:]").toString()
+      );
+    });
   });
 
   describe("getNamedProps", () => {

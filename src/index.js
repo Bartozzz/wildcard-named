@@ -1,9 +1,10 @@
 // @flow
-import escape from "escape-regexp";
+import escapeRegex from "lodash.escaperegexp";
 
 export const filters: Map<string, string> = new Map();
 export const addFilter = filters.set.bind(filters);
 
+// NOTE: we might want to limit the length to prevent ReDoS attacks:
 addFilter("digit", "([0-9]+)");
 addFilter("alnum", "([0-9A-Za-z]+)");
 addFilter("alpah", "([A-Za-z]+)");
@@ -18,20 +19,22 @@ addFilter(
 );
 
 /**
- * Return a valid, escaped regular expression from a `pattern`. A pattern should
+ * Return a valid, escaped regular builded from a `pattern`. A pattern should
  * respect the following structure: `[filter:name?]`.
  *
  * @param   {string}    pattern   Pattern to convert
  * @return  {RegExp}              Escaped regular expression
  */
-export function getValidRegex(pattern: string): * {
-  let escaped: string = escape(pattern);
+export function getValidRegex(pattern: string): RegExp {
+  let escaped: string = escapeRegex(pattern);
 
-  for (const data of filters) {
-    const rxp = new RegExp(`\\\\\\[${data[0]}\\\\:[A-Za-z]{0,}?\\\\]`, "g");
+  // Replace all [filter:name?] with the proper filter's regexp:
+  for (const [name, regexp] of filters) {
+    // NOTE: we might want to limit the name length to prevent ReDoS attacks:
+    const wildcard = new RegExp(`\\\\\\[${name}:[A-Za-z]*?\\\\]`, "g");
 
-    if (rxp.exec(escaped)) {
-      escaped = escaped.replace(rxp, data[1]);
+    if (wildcard.test(escaped)) {
+      escaped = escaped.replace(wildcard, regexp);
     }
   }
 

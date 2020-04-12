@@ -22,7 +22,7 @@
     "url": "https://github.com/Bartozzz/wildcard-named/issues"
   },
   "dependencies": {
-    "escape-regexp": "^0.0.1"
+    "lodash.escaperegexp": "^4.1.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -31,7 +31,7 @@
     "@babel/preset-env": "^7.9.5",
     "@babel/preset-flow": "^7.9.0",
     "@babel/register": "^7.9.0",
-    "babel-eslint": "^10.0.1",
+    "babel-eslint": "^10.1.0",
     "babel-plugin-add-module-exports": "^1.0.2",
     "babel-preset-minify": "^0.5.1",
     "core-js": "^3.6.5",
