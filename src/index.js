@@ -39,39 +39,21 @@ export function getValidRegex(pattern: string): * {
 }
 
 /**
- * Return a list of named props, where name refers to `name` in `[filter:name]`.
+ * @example
+ * getNamedProps("[x:a]-[y:b]-[z:c]");  // ["a", "b", "c"]
+ * getNamedProps("[x:]-[y:]-[z:]");     // ["0", "1", "2"]
+ * getNamedProps("[x:a]-[y:]-[z:c]");   // ["a", "0", "c"]
  *
  * @param   {string}    pattern   Pattern to get props from
  * @return  {Array}               Array of named props
  */
-export function getNamedProps(pattern: string): * {
-  const regex = /\[(\w+):(\w+)?]/g;
-  const props = [];
+export function getNamedProps(pattern: string): Array<string> {
+  const regex = /\[(\w+):(\w+)?]/g; // [filter:name?]
   let i = 0;
 
-  pattern.replace(regex, (...match) => {
-    props.push(match[2] || i++);
-    return "";
+  return [...pattern.matchAll(regex)].map(([match, filter, name]) => {
+    return name || String(i++);
   });
-
-  return props;
-}
-
-/**
- * @param   {RegExp}    regex   Generated regular expression based on pattern
- * @param   {string}    string  String to test
- * @return  {Array|null}
- * @access  private
- */
-export function getRegexMatches(regex: RegExp, string: string): * {
-  let matches: ?Array<string> = regex.exec(string);
-
-  if (matches) {
-    matches.shift();
-    matches = Array.from(matches); // remove properites set by regex.exec()
-  }
-
-  return matches;
 }
 
 /**
@@ -83,19 +65,17 @@ export function getRegexMatches(regex: RegExp, string: string): * {
  * @return  {Object|null}
  */
 export default function test(string: string, pattern: string): Object | null {
-  const regex = getValidRegex(pattern);
-  const matches = getRegexMatches(regex, string);
+  const matches = getValidRegex(pattern).exec(string);
 
-  if (!matches) {
-    return null;
+  if (matches) {
+    const values = [...matches].slice(1);
+    const keys = getNamedProps(pattern);
+
+    // Creates an object from two arrays:
+    return keys.reduce((output, value, index) => {
+      output[value] = values[index];
+
+      return output;
+    }, {});
   }
-
-  const props = getNamedProps(pattern);
-
-  // Creates an object from two arrays:
-  return props.reduce((output, value, index) => {
-    output[value] = matches[index];
-
-    return output;
-  }, {});
 }

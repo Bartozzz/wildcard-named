@@ -1,7 +1,10 @@
 {
   "comments": false,
   "presets": [
-    ["@babel/preset-env", { "targets": { "node": "8" } }],
+    [
+      "@babel/preset-env",
+      { "useBuiltIns": "usage", "corejs": "3.6", "targets": { "node": "8" } }
+    ],
     ["@babel/preset-flow"],
     ["minify"]
   ],

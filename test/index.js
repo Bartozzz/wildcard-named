@@ -1,4 +1,4 @@
-import wildcard, { filters, addFilter } from "../dist";
+import wildcard, { filters, addFilter, getNamedProps } from "../dist";
 import assert from "assert";
 
 describe("wildcard-named", () => {
@@ -28,10 +28,27 @@ describe("wildcard-named", () => {
     });
   });
 
-  it("should return null when nothing matched", () => {
-    assert.equal(null, wildcard("a-b-c", "[alpah:]"));
-    assert.equal(null, wildcard("a-b-c", "[alpah:]-[alpah:]"));
-    assert.equal(null, wildcard("a-b-c", "[lower:]-[lower:]-[upper:]"));
+  it("should return undefined when nothing matched", () => {
+    assert.equal(undefined, wildcard("a-b-c", "[alpah:]"));
+    assert.equal(undefined, wildcard("a-b-c", "[alpah:]-[alpah:]"));
+    assert.equal(undefined, wildcard("a-b-c", "[lower:]-[lower:]-[upper:]"));
+  });
+
+  describe("getNamedProps", () => {
+    it("should return named props when all wildcards are named", () => {
+      assert.deepStrictEqual(getNamedProps("[x:a]"), ["a"]);
+      assert.deepStrictEqual(getNamedProps("[x:a]-[x:b]"), ["a", "b"]);
+    });
+
+    it("should return numeric props when all wildcards are unnamed", () => {
+      assert.deepStrictEqual(getNamedProps("[x:]"), ["0"]);
+      assert.deepStrictEqual(getNamedProps("[x:]-[x:]"), ["0", "1"]);
+    });
+
+    it("should return mixed props when some wildcards are unnamed", () => {
+      assert.deepStrictEqual(getNamedProps("[x:]-[x:a]"), ["0", "a"]);
+      assert.deepStrictEqual(getNamedProps("[x:a]-[x:]"), ["a", "0"]);
+    });
   });
 
   describe("addFilter", () => {
