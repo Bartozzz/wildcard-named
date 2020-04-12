@@ -19,8 +19,8 @@ addFilter(
 );
 
 /**
- * Return a valid, escaped regular builded from a `pattern`. A pattern should
- * respect the following structure: `[filter:name?]`.
+ * Replace all [filter:name?] with the proper filter's regexp and return it. A
+ * pattern should respect the following structure: `[filter:name?]`.
  *
  * @param   {string}    pattern   Pattern to convert
  * @return  {RegExp}              Escaped regular expression
@@ -28,17 +28,22 @@ addFilter(
 export function getValidRegex(pattern: string): RegExp {
   let escaped: string = escapeRegex(pattern);
 
-  // Replace all [filter:name?] with the proper filter's regexp:
   for (const [name, regexp] of filters) {
-    // NOTE: we might want to limit the name length to prevent ReDoS attacks:
-    const wildcard = new RegExp(`\\\\\\[${name}:[A-Za-z]*?\\\\]`, "g");
+    const wildcard = new RegExp(`\\\\\\[${name}:[A-Za-z]{0,64}?\\\\]`, "g");
 
     if (wildcard.test(escaped)) {
       escaped = escaped.replace(wildcard, regexp);
     }
   }
 
-  return new RegExp(`^${escaped}$`, "g");
+  try {
+    return new RegExp(`^${escaped}$`, "g");
+  } catch (err) {
+    // If we created an invalid regular expression, then we should not match
+    // anything. The following regular expressions looks for a character after
+    // the end of the string, which is impossible in single-line mode.
+    return new RegExp("$.", "g");
+  }
 }
 
 /**
@@ -51,7 +56,7 @@ export function getValidRegex(pattern: string): RegExp {
  * @return  {Array}               Array of named props
  */
 export function getNamedProps(pattern: string): Array<string> {
-  const regex = /\[(\w+):(\w+)?]/g; // [filter:name?]
+  const regex = /\[(\w*):(\w{0,64})?]/g; // [filter:name?]
   let i = 0;
 
   return [...pattern.matchAll(regex)].map(([match, filter, name]) => {
@@ -68,6 +73,10 @@ export function getNamedProps(pattern: string): Array<string> {
  * @return  {Object|null}
  */
 export default function test(string: string, pattern: string): Object | null {
+  if (!string || string.length > 1024 * 64) {
+    return;
+  }
+
   const matches = getValidRegex(pattern).exec(string);
 
   if (matches) {
@@ -77,7 +86,6 @@ export default function test(string: string, pattern: string): Object | null {
     // Creates an object from two arrays:
     return keys.reduce((output, value, index) => {
       output[value] = values[index];
-
       return output;
     }, {});
   }

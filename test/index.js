@@ -6,6 +6,17 @@ import wildcard, {
 } from "../dist";
 import assert from "assert";
 
+// Utility function for generating long strings:
+function genstr(len, chr) {
+  let result = "";
+
+  for (let i = 0; i <= len; i++) {
+    result = result + chr;
+  }
+
+  return result;
+}
+
 describe("wildcard-named", () => {
   it("should match named parameters", () => {
     assert.deepStrictEqual(wildcard("1-2-3", "[digit:a]-[digit:b]-[digit:c]"), {
@@ -159,6 +170,28 @@ describe("wildcard-named", () => {
       assert.deepStrictEqual(wildcard("asdF!#$%@1234ERWDFQFADSA", "[all:]"), {
         0: "asdF!#$%@1234ERWDFQFADSA",
       });
+    });
+  });
+
+  describe("security (ReDoS)", () => {
+    it("should return null when input too big", () => {
+      const valid = genstr(1024 * 63, "a");
+      const invalid = genstr(1024 * 65, "a");
+
+      assert.equal(valid, wildcard(valid, "[lower:]")["0"]);
+      assert.equal(undefined, wildcard(invalid, "[lower:]"));
+    });
+
+    it("should return null when named prop too big", () => {
+      const valid = genstr(63, "a");
+      const invalid = genstr(65, "a");
+
+      assert.equal("a", wildcard("a", `[lower:${valid}]`)[valid]);
+      assert.equal(undefined, wildcard("a", `[lower:${invalid}]`));
+      assert.equal(
+        undefined,
+        wildcard("a-a", `[lower:${valid}]-[lower:${invalid}]`)
+      );
     });
   });
 });
