@@ -1,10 +1,11 @@
 <div align="center">
   <h1>wildcard-named</h1>
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Bartozzz/wildcard-named.svg)](https://greenkeeper.io/)
-[![Build Status](https://img.shields.io/travis/Bartozzz/wildcard-named.svg)](https://travis-ci.org/Bartozzz/wildcard-named/)
-[![License](https://img.shields.io/github/license/Bartozzz/wildcard-named.svg)](LICENSE)
+[![Default CI/CD](https://github.com/Bartozzz/wildcard-named/workflows/Default%20CI/CD/badge.svg)](https://github.com/Bartozzz/wildcard-named/actions)
+[![Known Vulnerabilities](https://snyk.io/test/github/Bartozzz/wildcard-named/badge.svg?targetFile=package.json)](https://snyk.io/test/github/Bartozzz/wildcard-named?targetFile=package.json)
+[![npm package size](https://img.badgesize.io/Bartozzz/wildcard-named/master/dist/index.js?compression=gzip)](https://www.npmjs.com/package/wildcard-named)
 [![npm version](https://img.shields.io/npm/v/wildcard-named.svg)](https://www.npmjs.com/package/wildcard-named)
+[![npm dependency Status](https://david-dm.org/Bartozzz/wildcard-named.svg)](https://www.npmjs.com/package/wildcard-named)
 [![npm downloads](https://img.shields.io/npm/dt/wildcard-named.svg)](https://www.npmjs.com/package/wildcard-named)
 <br>
 
