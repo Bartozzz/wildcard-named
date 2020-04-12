@@ -1,7 +1,7 @@
-import wildcard from "../dist";
+import wildcard, { filters, addFilter } from "../dist";
 import assert from "assert";
 
-describe("wildcard-param", () => {
+describe("wildcard-named", () => {
   it("should match named parameters", () => {
     assert.deepStrictEqual(wildcard("1-2-3", "[digit:a]-[digit:b]-[digit:c]"), {
       a: "1",
@@ -9,9 +9,9 @@ describe("wildcard-param", () => {
       c: "3",
     });
 
-    assert.deepStrictEqual(wildcard("a:b", "[alpah:aa]:[alpah:bb]"), {
-      aa: "a",
-      bb: "b",
+    assert.deepStrictEqual(wildcard("a:b", "[alpah:x]:[alpah:y]"), {
+      x: "a",
+      y: "b",
     });
   });
 
@@ -34,21 +34,90 @@ describe("wildcard-param", () => {
     assert.equal(null, wildcard("a-b-c", "[lower:]-[lower:]-[upper:]"));
   });
 
-  it("should add new filters", () => {
-    wildcard.addFilter("testA", "regex");
-    wildcard.addFilter("testB", "regex");
+  describe("addFilter", () => {
+    it("should add new filters", () => {
+      addFilter("testA", "regex");
+      addFilter("testB", "regex");
 
-    assert.equal(true, wildcard.filters.has("testA"));
-    assert.equal(true, wildcard.filters.has("testB"));
+      assert.equal(true, filters.has("testA"));
+      assert.equal(true, filters.has("testB"));
+    });
+
+    it("should match new filters", () => {
+      addFilter("testing1", "(.*?)");
+      addFilter("testing2", "([0-9])");
+
+      assert.deepStrictEqual(wildcard("foo-1", "[testing1:a]-[testing2:b]"), {
+        a: "foo",
+        b: "1",
+      });
+    });
   });
 
-  it("should match new filters", () => {
-    wildcard.addFilter("testing1", "(.*?)");
-    wildcard.addFilter("testing2", "([0-9])");
+  describe("filters", () => {
+    it("digit", () => {
+      assert.deepStrictEqual(wildcard("123:456", "[digit:]:[digit:]"), {
+        0: "123",
+        1: "456",
+      });
+    });
 
-    assert.deepStrictEqual(wildcard("foo-1", "[testing1:a]-[testing2:b]"), {
-      a: "foo",
-      b: "1",
+    it("alnum", () => {
+      assert.deepStrictEqual(wildcard("1aA:2bB", "[alnum:]:[alnum:]"), {
+        0: "1aA",
+        1: "2bB",
+      });
+    });
+
+    it("alpah", () => {
+      assert.deepStrictEqual(wildcard("abc:ABC", "[alpah:]:[alpah:]"), {
+        0: "abc",
+        1: "ABC",
+      });
+    });
+
+    it("xdigit", () => {
+      assert.deepStrictEqual(wildcard("1f3:4b3", "[xdigit:]:[xdigit:]"), {
+        0: "1f3",
+        1: "4b3",
+      });
+    });
+
+    it("punct", () => {
+      assert.deepStrictEqual(wildcard("!#%&'()*,-./:;?@[]_‘{}", "[punct:]"), {
+        0: "!#%&'()*,-./:;?@[]_‘{}",
+      });
+    });
+
+    it("print", () => {
+      assert.deepStrictEqual(wildcard("abc:+-=", "[print:]:[print:]"), {
+        0: "abc",
+        1: "+-=",
+      });
+    });
+
+    it("upper", () => {
+      assert.deepStrictEqual(
+        wildcard("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "[upper:]"),
+        {
+          0: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        }
+      );
+    });
+
+    it("lower", () => {
+      assert.deepStrictEqual(
+        wildcard("abcdefghijklmnopqrstuvwxyz", "[lower:]"),
+        {
+          0: "abcdefghijklmnopqrstuvwxyz",
+        }
+      );
+    });
+
+    it("all", () => {
+      assert.deepStrictEqual(wildcard("asdF!#$%@1234ERWDFQFADSA", "[all:]"), {
+        0: "asdF!#$%@1234ERWDFQFADSA",
+      });
     });
   });
 });

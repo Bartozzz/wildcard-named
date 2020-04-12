@@ -6,9 +6,10 @@
 [![License](https://img.shields.io/github/license/Bartozzz/wildcard-named.svg)](LICENSE)
 [![npm version](https://img.shields.io/npm/v/wildcard-named.svg)](https://www.npmjs.com/package/wildcard-named)
 [![npm downloads](https://img.shields.io/npm/dt/wildcard-named.svg)](https://www.npmjs.com/package/wildcard-named)
-  <br>
+<br>
 
 A small and easy-to-use utility module for matching strings using named and/or unnamed wildcards for JavaScript.
+
 </div>
 
 ## Installation
@@ -60,10 +61,10 @@ wildcard("a-b-c", "[alpah:]");
 You can add your own filters using the `.addFilter(filter, regex)` function, like this:
 
 ```javascript
-import wildcard from "wildcard-named";
+import wildcard, { addFilter } from "wildcard-named";
 
-wildcard.addFilter("testA", "(.*?)");
-wildcard.addFilter("testB", "([0-9])");
+addFilter("testA", "(.*?)");
+addFilter("testB", "([0-9])");
 
 wildcard("match-1", "[testA:a]-[testB:b]");
 // { a: 'match', b: '1' }
@@ -73,17 +74,17 @@ All registered filters are stored in a [Map](https://developer.mozilla.org/en-US
 
 #### Predefined wildcards
 
-| Filter   | Regex            |
-|----------|------------------|
-| `digit`  | `([0-9]+)`       |
-| `alnum`  | `([0-9A-Za-z]+)` |
-| `alpah`  | `([A-Za-z]+)`    |
-| `xdigit` | `([0-9A-Fa-f]+)` |
-| `punct`  | `([\p{P}\d]+)`   |
-| `print`  | `([\x20-\x7e]*)` |
-| `upper`  | `([A-Z]+)`       |
-| `lower`  | `([a-z]+)`       |
-| `all`    | `(.*?)`          |
+| Filter   | Regex                                                                          | Description                                                         |
+| -------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| `digit`  | `([0-9]+)`                                                                     | Digits.                                                             |
+| `alnum`  | `([0-9A-Za-z]+)`                                                               | Alphanumeric characters.                                            |
+| `alpah`  | `([A-Za-z]+)`                                                                  | Alphabetic characters.                                              |
+| `xdigit` | `([0-9A-Fa-f]+)`                                                               | Hexadecimal digits.                                                 |
+| `punct`  | `([\\u2000-\\u206F\\u2E00-\\u2E7F\\'!\"#$%&()*+,\\-./:;<=>?@\\[\\]^_{ | }~]+)` | Punctuation (with symbols).                                         |
+| `print`  | `([\x20-\x7e]*)`                                                               | Visible characters and spaces (anything except control characters). |
+| `upper`  | `([A-Z]+)`                                                                     | Uppercase letters.                                                  |
+| `lower`  | `([a-z]+)`                                                                     | Lowercase letters.                                                  |
+| `all`    | `(.*?)`                                                                        | Everything.                                                         |
 
 ## Tests
 

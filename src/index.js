@@ -1,17 +1,21 @@
 // @flow
 import escape from "escape-regexp";
 
-const filters: Map<string, string> = new Map();
+export const filters: Map<string, string> = new Map();
+export const addFilter = filters.set.bind(filters);
 
-filters.set("digit", "([0-9]+)");
-filters.set("alnum", "([0-9A-Za-z]+)");
-filters.set("alpah", "([A-Za-z]+)");
-filters.set("xdigit", "([0-9A-Fa-f]+)");
-filters.set("punct", `([\p{P}\d]+)`);
-filters.set("print", "([\x20-\x7e]*)");
-filters.set("upper", "([A-Z]+)");
-filters.set("lower", "([a-z]+)");
-filters.set("all", "(.*?)");
+addFilter("digit", "([0-9]+)");
+addFilter("alnum", "([0-9A-Za-z]+)");
+addFilter("alpah", "([A-Za-z]+)");
+addFilter("xdigit", "([0-9A-Fa-f]+)");
+addFilter("print", "([\\x20-\\x7e]*)");
+addFilter("upper", "([A-Z]+)");
+addFilter("lower", "([a-z]+)");
+addFilter("all", "(.*?)");
+addFilter(
+  "punct",
+  "([\\u2000-\\u206F\\u2E00-\\u2E7F\\'!\"#$%&()*+,\\-./:;<=>?@\\[\\]^_`{|}~]+)"
+);
 
 /**
  * Return a valid, escaped regular expression from a `pattern`. A pattern should
@@ -20,7 +24,7 @@ filters.set("all", "(.*?)");
  * @param   {string}    pattern   Pattern to convert
  * @return  {RegExp}              Escaped regular expression
  */
-function getValidRegex(pattern: string): * {
+export function getValidRegex(pattern: string): * {
   let escaped: string = escape(pattern);
 
   for (const data of filters) {
@@ -40,7 +44,7 @@ function getValidRegex(pattern: string): * {
  * @param   {string}    pattern   Pattern to get props from
  * @return  {Array}               Array of named props
  */
-function getNamedProps(pattern: string): * {
+export function getNamedProps(pattern: string): * {
   const regex = /\[(\w+):(\w+)?]/g;
   const props = [];
   let i = 0;
@@ -59,7 +63,7 @@ function getNamedProps(pattern: string): * {
  * @return  {Array|null}
  * @access  private
  */
-function getRegexMatches(regex: RegExp, string: string): * {
+export function getRegexMatches(regex: RegExp, string: string): * {
   let matches: ?Array<string> = regex.exec(string);
 
   if (matches) {
@@ -78,7 +82,7 @@ function getRegexMatches(regex: RegExp, string: string): * {
  * @param   {string}    pattern Pattern to match
  * @return  {Object|null}
  */
-function test(string: string, pattern: string): Object | null {
+export default function test(string: string, pattern: string): Object | null {
   const regex = getValidRegex(pattern);
   const matches = getRegexMatches(regex, string);
 
@@ -95,7 +99,3 @@ function test(string: string, pattern: string): Object | null {
     return output;
   }, {});
 }
-
-module.exports = test;
-module.exports.filters = filters;
-module.exports.addFilter = filters.set.bind(filters);
