@@ -31,10 +31,10 @@ import wildcard from "wildcard-named";
 import wildcard from "wildcard-named";
 
 wildcard("//blog.com/page/14", "//blog.com/page/[digit:page]");
-// { page: '14' }
+// { 'page': '14' }
 
-wildcard("abc-123:d2f", "[digit:a]-[alpah:b]:[alnum:c]");
-// { a: 'abc', b: '123', c: 'd2f' }
+wildcard("abc-123:d2f", "[digit:a]-[alpah:]:[alnum:c]");
+// { 'a': 'abc', '0': '123', 'c': 'd2f' }
 ```
 
 ### Unnamed wildcards
@@ -43,18 +43,18 @@ wildcard("abc-123:d2f", "[digit:a]-[alpah:b]:[alnum:c]");
 import wildcard from "wildcard-named";
 
 wildcard("a-b-c", "[alpah:]-[alpah:]-[alpah:]");
-// { 0: 'a', 1: 'b', 2: 'c' }
+// { '0': 'a', '1': 'b', '2': 'c' }
 ```
 
 ### Unmatched wildcards
 
-When the pattern cannot be resolved, it will return `null`.
+When the pattern cannot be resolved, it will return `undefined`.
 
 ```javascript
 import wildcard from "wildcard-named";
 
 wildcard("a-b-c", "[alpah:]");
-// null
+// undefined
 ```
 
 ### Wildcards
@@ -68,7 +68,7 @@ addFilter("testA", "(.*?)");
 addFilter("testB", "([0-9])");
 
 wildcard("match-1", "[testA:a]-[testB:b]");
-// { a: 'match', b: '1' }
+// { 'a': 'match', 'b': '1' }
 ```
 
 All registered filters are stored in a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) at `wildcard.filters`.
