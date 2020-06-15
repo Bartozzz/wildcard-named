@@ -17,7 +17,7 @@ addFilter("space", "([ \\t\\r\\n\\v\\f]+)");
 addFilter("graph", "([\\x21-\\x7E]+)");
 addFilter("blank", "([ \\t]+)");
 addFilter("ascii", "([\\x00-\\x7F]+)");
-addFilter("cntrl", "([\x00-\x1F\x7F]+)");
+addFilter("cntrl", "([\\x00-\\x1F\\x7F]+)");
 addFilter("all", "(.*?)");
 addFilter(
   "punct",
