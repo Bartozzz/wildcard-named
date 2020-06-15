@@ -171,6 +171,12 @@ describe("wildcard-named", () => {
         0: "asdF!#$%@1234ERWDFQFADSA",
       });
     });
+
+    it("word", () => {
+      assert.deepStrictEqual(wildcard("abcd_ABCD_0123", "[word:]"), {
+        0: "abcd_ABCD_0123",
+      });
+    });
   });
 
   describe("security (ReDoS)", () => {

@@ -12,6 +12,7 @@ addFilter("xdigit", "([0-9A-Fa-f]+)");
 addFilter("print", "([\\x20-\\x7e]*)");
 addFilter("upper", "([A-Z]+)");
 addFilter("lower", "([a-z]+)");
+addFilter("word", "([A-Za-z0-9_]+)");
 addFilter("all", "(.*?)");
 addFilter(
   "punct",
