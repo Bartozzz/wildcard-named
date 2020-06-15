@@ -195,6 +195,12 @@ describe("wildcard-named", () => {
         }
       );
     });
+
+    it("blank", () => {
+      assert.deepStrictEqual(wildcard(" ", "[blank:]"), {
+        0: " ",
+      });
+    });
   });
 
   describe("security (ReDoS)", () => {

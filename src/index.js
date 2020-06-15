@@ -15,6 +15,7 @@ addFilter("lower", "([a-z]+)");
 addFilter("word", "([A-Za-z0-9_]+)");
 addFilter("space", "([ \\t\\r\\n\\v\\f]+)");
 addFilter("graph", "([\\x21-\\x7E]+)");
+addFilter("blank", "([ \\t]+)");
 addFilter("all", "(.*?)");
 addFilter(
   "punct",
