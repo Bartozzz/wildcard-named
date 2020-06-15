@@ -75,17 +75,23 @@ All registered filters are stored in a [Map](https://developer.mozilla.org/en-US
 
 #### Predefined wildcards
 
-| Filter   | Regex                                                                       | Description                                                         |
-| -------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `digit`  | `([0-9]+)`                                                                  | Digits.                                                             |
-| `alnum`  | `([0-9A-Za-z]+)`                                                            | Alphanumeric characters.                                            |
-| `alpah`  | `([A-Za-z]+)`                                                               | Alphabetic characters.                                              |
-| `xdigit` | `([0-9A-Fa-f]+)`                                                            | Hexadecimal digits.                                                 |
-| `punct`  | `([\\u2000-\\u206F\\u2E00-\\u2E7F\\'!\"#$%&()*+,\\-./:;<=>?@\\[\\]^_{}~]+)` | Punctuation (with symbols).                                         |
-| `print`  | `([\x20-\x7e]*)`                                                            | Visible characters and spaces (anything except control characters). |
-| `upper`  | `([A-Z]+)`                                                                  | Uppercase letters.                                                  |
-| `lower`  | `([a-z]+)`                                                                  | Lowercase letters.                                                  |
-| `all`    | `(.*?)`                                                                     | Everything.                                                         |
+| Filter   | Regex                                                              | Description                                                         |
+| -------- | ------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| `digit`  | `([0-9]+)`                                                         | Digits.                                                             |
+| `alnum`  | `([0-9A-Za-z]+)`                                                   | Alphanumeric characters.                                            |
+| `alpha`  | `([A-Za-z]+)`                                                      | Alphabetic characters.                                              |
+| `xdigit` | `([0-9A-Fa-f]+)`                                                   | Hexadecimal digits.                                                 |
+| `punct`  | `([\u2000-\u206F\u2E00-\u2E7F\'!"#$%&()*+,\-./:;<=>?@\[\]^_{}~]+)` | Punctuation (with symbols).                                         |
+| `print`  | `([\x20-\x7e]*)`                                                   | Visible characters and spaces (anything except control characters). |
+| `upper`  | `([A-Z]+)`                                                         | Uppercase letters.                                                  |
+| `lower`  | `([a-z]+)`                                                         | Lowercase letters.                                                  |
+| `all`    | `(.*?)`                                                            | Everything.                                                         |
+| `word`   | `([A-Za-z0-9_]+)`                                                  | Word characters (letters, numbers and underscores).                 |
+| `space`  | `([ \t\r\n\v\f]+)`                                                 | All whitespace characters, including line breaks.                   |
+| `graph`  | `([\x21-\x7E]+)`                                                   | Visible characters (anything except spaces and control characters). |
+| `blank`  | `([ \t]+)`                                                         | Space and tab.                                                      |
+| `ascii`  | `([\x00-\x7F]+)`                                                   | ASCII characters.                                                   |
+| `cntrl`  | `([\x00-\x1F\x7F]+)`                                               | Control characters.                                                 |
 
 ## Tests
 
