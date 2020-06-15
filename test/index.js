@@ -183,6 +183,18 @@ describe("wildcard-named", () => {
         0: " ",
       });
     });
+
+    it("graph", () => {
+      assert.deepStrictEqual(
+        wildcard(
+          "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstvwxyz{|}~",
+          "[graph:]"
+        ),
+        {
+          0: "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstvwxyz{|}~",
+        }
+      );
+    });
   });
 
   describe("security (ReDoS)", () => {
