@@ -13,6 +13,7 @@ addFilter("print", "([\\x20-\\x7e]*)");
 addFilter("upper", "([A-Z]+)");
 addFilter("lower", "([a-z]+)");
 addFilter("word", "([A-Za-z0-9_]+)");
+addFilter("space", "([ \\t\\r\\n\\v\\f]+)");
 addFilter("all", "(.*?)");
 addFilter(
   "punct",

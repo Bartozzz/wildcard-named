@@ -177,6 +177,12 @@ describe("wildcard-named", () => {
         0: "abcd_ABCD_0123",
       });
     });
+
+    it("space", () => {
+      assert.deepStrictEqual(wildcard(" ", "[space:]"), {
+        0: " ",
+      });
+    });
   });
 
   describe("security (ReDoS)", () => {
