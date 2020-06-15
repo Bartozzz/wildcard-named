@@ -201,6 +201,18 @@ describe("wildcard-named", () => {
         0: " ",
       });
     });
+
+    it("ascii", () => {
+      assert.deepStrictEqual(
+        wildcard(
+          "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstvwxyz{|}~",
+          "[ascii:]"
+        ),
+        {
+          0: "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstvwxyz{|}~",
+        }
+      );
+    });
   });
 
   describe("security (ReDoS)", () => {
