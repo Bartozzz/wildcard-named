@@ -25,7 +25,7 @@ describe("wildcard-named", () => {
       c: "3",
     });
 
-    assert.deepStrictEqual(wildcard("a:b", "[alpah:x]:[alpah:y]"), {
+    assert.deepStrictEqual(wildcard("a:b", "[alpha:x]:[alpha:y]"), {
       x: "a",
       y: "b",
     });
@@ -38,15 +38,15 @@ describe("wildcard-named", () => {
       2: "3",
     });
 
-    assert.deepStrictEqual(wildcard("a:b", "[alpah:]:[alpah:]"), {
+    assert.deepStrictEqual(wildcard("a:b", "[alpha:]:[alpha:]"), {
       0: "a",
       1: "b",
     });
   });
 
   it("should return undefined when nothing matched", () => {
-    assert.equal(undefined, wildcard("a-b-c", "[alpah:]"));
-    assert.equal(undefined, wildcard("a-b-c", "[alpah:]-[alpah:]"));
+    assert.equal(undefined, wildcard("a-b-c", "[alpha:]"));
+    assert.equal(undefined, wildcard("a-b-c", "[alpha:]-[alpha:]"));
     assert.equal(undefined, wildcard("a-b-c", "[lower:]-[lower:]-[upper:]"));
   });
 
@@ -121,8 +121,8 @@ describe("wildcard-named", () => {
       });
     });
 
-    it("alpah", () => {
-      assert.deepStrictEqual(wildcard("abc:ABC", "[alpah:]:[alpah:]"), {
+    it("alpha", () => {
+      assert.deepStrictEqual(wildcard("abc:ABC", "[alpha:]:[alpha:]"), {
         0: "abc",
         1: "ABC",
       });

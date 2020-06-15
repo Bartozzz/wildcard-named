@@ -7,7 +7,7 @@ export const addFilter = filters.set.bind(filters);
 // NOTE: we might want to limit the length to prevent ReDoS attacks:
 addFilter("digit", "([0-9]+)");
 addFilter("alnum", "([0-9A-Za-z]+)");
-addFilter("alpah", "([A-Za-z]+)");
+addFilter("alpha", "([A-Za-z]+)");
 addFilter("xdigit", "([0-9A-Fa-f]+)");
 addFilter("print", "([\\x20-\\x7e]*)");
 addFilter("upper", "([A-Z]+)");
