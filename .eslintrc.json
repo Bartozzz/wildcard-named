@@ -1,7 +1,7 @@
 {
   "parser": "babel-eslint",
 
-  "extends": ["standard", "prettier", "prettier/flowtype", "prettier/standard"],
+  "extends": ["standard", "prettier"],
   "plugins": ["flowtype", "standard", "prettier"],
 
   "env": {
@@ -23,6 +23,7 @@
     "no-confusing-arrow": [0],
     "no-prototype-builtins": [0],
     "no-useless-escape": [0],
+    "prefer-regex-literals": [0],
 
     "prettier/prettier": [2],
     "flowtype/define-flow-type": 1

@@ -2,7 +2,10 @@
 import escapeRegex from "lodash.escaperegexp";
 
 export const filters: Map<string, string> = new Map();
-export const addFilter = filters.set.bind(filters);
+export const addFilter: (
+  name: string,
+  regexp: string
+) => Map<string, string> = filters.set.bind(filters);
 
 // NOTE: we might want to limit the length to prevent ReDoS attacks:
 addFilter("digit", "([0-9]+)");
